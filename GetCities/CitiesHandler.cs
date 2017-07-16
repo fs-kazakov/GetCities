@@ -25,7 +25,7 @@ namespace GetCities.Classes
 
         public List<string> GetCountriesLinks()
         {
-            string htmlCode = getAndSeparateHTML("http://www.gismeteo.ua/catalog/");
+            string htmlCode = getHTML("http://www.gismeteo.ua/catalog/");
 
             string pattern = "<a href=\"(.*?)\">";
             MatchCollection matches = Regex.Matches(htmlCode, pattern);
@@ -54,7 +54,7 @@ namespace GetCities.Classes
             for (int i = 0; i < 5; i++)
             {
                 countryHTMLs.Add(
-                    getAndSeparateHTML("http://www.gismeteo.ua" + links[i]));
+                    getHTML("http://www.gismeteo.ua" + links[i]));
             }
 
             return countryHTMLs;
@@ -62,7 +62,7 @@ namespace GetCities.Classes
 
 
         //UTILS
-        public string getAndSeparateHTML(string link)
+        public string getHTML (string link)
         {
             string htmlCodeUnparsed;
 
@@ -72,7 +72,6 @@ namespace GetCities.Classes
 
             return htmlCodeUnparsed;
         }
-
 
     }
 }
