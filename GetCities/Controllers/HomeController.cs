@@ -19,7 +19,7 @@ namespace GetCities.Controllers
         {
             CitiesHandler dataSource = new CitiesHandler();
 
-            string testResult = dataSource.GetCountriesLinks();
+            string testResult = dataSource.getCities();
             return View(testResult as object);
         }
     }

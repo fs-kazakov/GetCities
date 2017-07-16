@@ -15,47 +15,62 @@ namespace GetCities.Classes
 
         }
 
-        public string GetCountriesLinks()
-        {
-            string result = "Nothing yet";
 
+        public string getCities()
+        {
+            string result = getCountriesHtml(GetCountriesLinks())[0];
+
+            return result;
+        }
+
+        public List<string> GetCountriesLinks()
+        {
+            string htmlCode = getAndSeparateHTML("http://www.gismeteo.ua/catalog/");
+
+            string pattern = "<a href=\"(.*?)\">";
+            MatchCollection matches = Regex.Matches(htmlCode, pattern);
+
+            List<string> countryLinks = new List<string>();
+            string tempMatch;
+
+            for (int i = 0; i < matches.Count; i++)
+            {
+                tempMatch = matches[i].Groups[1].ToString();
+
+                if (tempMatch.Contains("/catalog/") && tempMatch != "/catalog/" && tempMatch != "/map/catalog/")
+                {
+                    countryLinks.Add(tempMatch);
+                }
+            }
+
+            return countryLinks;
+        }
+
+
+        public List<String> getCountriesHtml(List<string> links)
+        {
+            List<String> countryHTMLs = new List<String>();
+
+            for (int i = 0; i < 5; i++)
+            {
+                countryHTMLs.Add(
+                    getAndSeparateHTML("http://www.gismeteo.ua" + links[i]));
+            }
+
+            return countryHTMLs;
+        }
+
+
+        //UTILS
+        public string getAndSeparateHTML(string link)
+        {
             string htmlCodeUnparsed;
 
             WebClient client = new WebClient();
             client.Encoding = System.Text.Encoding.UTF8;
-            htmlCodeUnparsed = client.DownloadString("http://www.gismeteo.ua/catalog/");
+            htmlCodeUnparsed = client.DownloadString(link);
 
-            string[] htmlCodeWrapDivider = new string[2];
-
-            htmlCodeWrapDivider = htmlCodeUnparsed.Split(
-                        new[] { "<div class=\"countries wrap\">" },
-                        StringSplitOptions.None);
-
-            htmlCodeWrapDivider[0] = String.Empty;
-
-
-            string pattern = "<a href=\"(.*?)\">";
-            MatchCollection matches = Regex.Matches(htmlCodeWrapDivider[1], pattern);
-            Console.WriteLine("Matches found: {0}", matches.Count);
-
-
-            if (matches.Count > 0)
-            {
-                string[] htmlCodeCountry = new string[matches.Count];
-
-                for (int i = 0; i < matches.Count; i++)
-                {
-                    htmlCodeCountry[i] = client.DownloadString("http://www.gismeteo.ua" + matches[i].Groups[1]);
-                }
-
-                result = String.Format("Got URLs for {0} countries", matches.Count);
-            }
-            else
-            {
-                result = "Failed to get countries' URLs";
-            }
-
-            return result;
+            return htmlCodeUnparsed;
         }
 
 
