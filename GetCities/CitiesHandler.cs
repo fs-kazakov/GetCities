@@ -45,7 +45,7 @@ namespace GetCities.Classes
 
                 for (int i = 0; i < matches.Count; i++)
                 {
-                    htmlCodeCountry[i] = client.DownloadString("http://www.gismeteo.ua" + matches[0].Groups[1]);
+                    htmlCodeCountry[i] = client.DownloadString("http://www.gismeteo.ua" + matches[i].Groups[1]);
                 }
 
                 result = String.Format("Got URLs for {0} countries", matches.Count);
@@ -54,8 +54,6 @@ namespace GetCities.Classes
             {
                 result = "Failed to get countries' URLs";
             }
-
-
 
             return result;
         }
