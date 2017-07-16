@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GetCities.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,17 +17,10 @@ namespace GetCities.Controllers
 
         public ActionResult Cities()
         {
+            CitiesHandler dataSource = new CitiesHandler();
 
-            string htmlCode;
-
-            using (System.Net.WebClient client = new System.Net.WebClient())
-            {
-                client.Encoding = System.Text.Encoding.UTF8;
-                htmlCode = client.DownloadString("http://www.gismeteo.ua/catalog/");
-            }
-
-            object htmlCodeObj = htmlCode as object;
-            return View(htmlCodeObj);
+            string testResult = dataSource.GetCountriesLinks();
+            return View(testResult as object);
         }
     }
 }
