@@ -16,7 +16,16 @@ namespace GetCities.Controllers
 
         public ActionResult Cities()
         {
-            return View();
+
+            string htmlCode;
+
+            using (System.Net.WebClient client = new System.Net.WebClient())
+            {
+                htmlCode = client.DownloadString("http://www.gismeteo.ua/catalog/");
+            }
+
+            object htmlCodeObj = htmlCode as object;
+            return View(htmlCodeObj);
         }
     }
 }
