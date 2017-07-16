@@ -1,8 +1,16 @@
-﻿@model object
+﻿@using GetCities.Classes
+@model List<CityInfo>
 @{
     ViewBag.Title = "Cities";
 }
 
 <h2>Cities</h2>
 
-<p>@Model.ToString()</p>
+<p>@Model</p>
+
+@foreach (CityInfo info in Model)
+{
+    <p>@info.cityName</p>
+    <p>@info.cityUrl</p>
+    <hr />
+}

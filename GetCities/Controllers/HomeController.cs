@@ -19,8 +19,8 @@ namespace GetCities.Controllers
         {
             CitiesHandler dataSource = new CitiesHandler();
 
-            string testResult = dataSource.getCities();
-            return View(testResult as object);
+            List<GetCities.Classes.CityInfo> viewmodel = dataSource.getCities();
+            return View(viewmodel as object);
         }
     }
 }
