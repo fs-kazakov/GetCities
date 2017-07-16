@@ -21,6 +21,7 @@ namespace GetCities.Controllers
 
             using (System.Net.WebClient client = new System.Net.WebClient())
             {
+                client.Encoding = System.Text.Encoding.UTF8;
                 htmlCode = client.DownloadString("http://www.gismeteo.ua/catalog/");
             }
 
