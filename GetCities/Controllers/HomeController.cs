@@ -13,5 +13,10 @@ namespace GetCities.Controllers
         {
             return View();
         }
+
+        public ActionResult Cities()
+        {
+            return View();
+        }
     }
 }
