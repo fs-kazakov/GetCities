@@ -31,9 +31,9 @@ namespace GetCities.Classes
             completeCities = new List<CityInfo>();
         }
 
-        public List<CityInfo> getCities()
+        public List<CityInfo> getCities(string url)
         {
-            List<string> URLs = getURLs("https://www.gismeteo.ua/catalog/austria/");
+            List<string> URLs = getURLs(url);
 
             checkWeatherURLinHTML(URLs);
 

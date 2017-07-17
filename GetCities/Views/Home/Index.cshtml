@@ -3,8 +3,20 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Get Cities</h2>
 
-<a href='@Url.Action("Cities", "Home")'>
-    <p>Get cities</p>
+<a href='@Url.Action("Cities", "Home", new { url = "https://www.gismeteo.ua/catalog/australia/" })'>
+    <p>Get all cities from Australia (fast)</p>
+</a>
+
+<a href='@Url.Action("Cities", "Home", new { url = "https://www.gismeteo.ua/catalog/austria/" })'>
+    <p>Get all cities from Austria (fast)</p>
+</a>
+
+<a href='@Url.Action("Cities", "Home", new { url = "https://www.gismeteo.ua/catalog/ukraine/" })'>
+    <p>Get all cities from Ukraine (slower)</p>
+</a>
+
+<a href='@Url.Action("Cities", "Home", new { url = "https://www.gismeteo.ua/catalog/" })'>
+    <p>Get all cities from all over the world (slowest)</p>
 </a>

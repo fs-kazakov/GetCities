@@ -16,18 +16,18 @@ namespace GetCities.Controllers
         }
 
 
-        public JsonResult GetJsonData()
+        public JsonResult GetJsonData(string url)
         {
             CitiesHandler dataSource = new CitiesHandler();
-            List<GetCities.Classes.CityInfo> cities = dataSource.getCities();
+            List<GetCities.Classes.CityInfo> cities = dataSource.getCities(url);
 
             return Json(cities, JsonRequestBehavior.AllowGet);
         }
 
 
-        public ActionResult Cities()
+        public ActionResult Cities(string url)
         {
-            return View();
+            return View(url as object);
         }
     }
 }

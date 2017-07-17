@@ -1,15 +1,21 @@
-﻿
+﻿@model string
 @{
     ViewBag.Title = "Cities";
+
+    if (string.IsNullOrEmpty(Model))
+    {
+        Response.Redirect(Url.Action("Index"));
+    }
 }
 
 <h2>Cities</h2>
+<h3>You requested cities from this link: @Model</h3>
 <h3 id="disclaimer">Loading list of cities. Please, be patient.</h3>
 
 <div id="cities"></div>
 
 <script>
-    $.getJSON('http://localhost:50159/Home/GetJsonData', function (data) {
+    $.getJSON('http://localhost:50159/Home/GetJsonData/', { url: "@Model" }, function (data) {
 
         var list = $("#cities").append('<ul></ul>').find('ul');
         for (var i = 0; i < data.length; i++)
