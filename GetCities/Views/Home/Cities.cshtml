@@ -1,16 +1,27 @@
-﻿@using GetCities.Classes
-@model List<CityInfo>
+﻿
 @{
     ViewBag.Title = "Cities";
 }
 
 <h2>Cities</h2>
+<h3 id="disclaimer">Loading list of cities. Please, be patient.</h3>
 
-<p>@Model</p>
+<div id="cities"></div>
 
-@foreach (CityInfo info in Model)
-{
-    <p>@info.cityName</p>
-    <p>@info.cityUrl</p>
-    <hr />
-}
+<script>
+    $.getJSON('http://localhost:50159/Home/GetJsonData', function (data) {
+
+        var list = $("#cities").append('<ul></ul>').find('ul');
+        for (var i = 0; i < data.length; i++)
+            {
+
+            list.append('<li><a href="https://www.gismeteo.ua' + data[i].cityUrl + '">' + data[i].cityName + '</a></li>');
+        }
+
+        $('#disclaimer').remove();
+
+    })
+
+
+
+</script>

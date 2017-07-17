@@ -101,9 +101,11 @@ namespace GetCities.Classes
                     newCity.cityUrl = cityUrls[i];
                     newCity.cityName = cityNames[i];
 
+
                     completeCities.Add(newCity);
                 }
             }
+
 
         }
 

@@ -15,12 +15,19 @@ namespace GetCities.Controllers
             return View();
         }
 
-        public ActionResult Cities()
+
+        public JsonResult GetJsonData()
         {
             CitiesHandler dataSource = new CitiesHandler();
+            List<GetCities.Classes.CityInfo> cities = dataSource.getCities();
 
-            List<GetCities.Classes.CityInfo> viewmodel = dataSource.getCities();
-            return View(viewmodel as object);
+            return Json(cities, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult Cities()
+        {
+            return View();
         }
     }
 }
