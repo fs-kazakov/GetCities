@@ -21,38 +21,38 @@ namespace GetCities.Classes
 
     public class CitiesHandler
     {
-        public List<String> htmlLinksToCityPages;
+        public List<String> partialURLsToPagesWithCities;
         public List<CityInfo> completeCities;
 
 
         public CitiesHandler()
         {
-            htmlLinksToCityPages = new List<String>();
+            partialURLsToPagesWithCities = new List<String>();
             completeCities = new List<CityInfo>();
         }
 
         public List<CityInfo> getCities()
         {
-            List<string> links = getLinks("https://www.gismeteo.ua/catalog/ukraine/");
+            List<string> URLs = getURLs("https://www.gismeteo.ua/catalog/austria/");
 
-            processHTML(links);
+            checkWeatherURLinHTML(URLs);
 
-            getLinksAndNames(htmlLinksToCityPages);
+            getCitiesURLsAndNames(partialURLsToPagesWithCities);
 
             return completeCities;
         }
 
-        public void processHTML(List<string> links)
+        public void checkWeatherURLinHTML(List<string> URLs)
         {
-            foreach (string link in links)
+            foreach (string URL in URLs)
             {
-                if (getHTML("http://www.gismeteo.ua" + link).Contains("<a href=\"/weather"))
+                if (getHTML("http://www.gismeteo.ua" + URL).Contains("<a href=\"/weather"))
                 {
-                    htmlLinksToCityPages.Add(link);
+                    partialURLsToPagesWithCities.Add(URL);
                 }
                 else
                 {
-                    processHTML(getLinks("http://www.gismeteo.ua" + link));
+                    checkWeatherURLinHTML(getURLs("http://www.gismeteo.ua" + URL));
                 }
             }
 
@@ -60,12 +60,12 @@ namespace GetCities.Classes
         }
 
 
-        public List<String> getLinks(string linkToParse)
+        public List<String> getURLs(string sourceURL)
         {
             string pattern = "<a href=\"(.*?)\">";
-            MatchCollection matches = Regex.Matches(getHTML(linkToParse), pattern);
+            MatchCollection matches = Regex.Matches(getHTML(sourceURL), pattern);
 
-            List<string> links = new List<string>();
+            List<string> URLs = new List<string>();
             string tempMatch;
 
             for (int i = 0; i < matches.Count; i++)
@@ -74,25 +74,25 @@ namespace GetCities.Classes
 
                 if (tempMatch.Contains("/catalog/") && tempMatch != "/catalog/" && tempMatch != "/map/catalog/")
                 {
-                    links.Add(tempMatch);
+                    URLs.Add(tempMatch);
                 }
             }
 
 
-            return links;
+            return URLs;
 
         }
 
-        public void getLinksAndNames(List<String> links)
+        public void getCitiesURLsAndNames(List<String> partialURLs)
         {
             List <string> cityUrls = new List<String>();
             List<string> cityNames = new List<String>();
 
 
-            foreach (string link in links)
+            foreach (string pURL in partialURLs)
             {
-                cityUrls = getCityUrls("http://www.gismeteo.ua" + link);
-                cityNames = getNames("http://www.gismeteo.ua" + link);
+                cityUrls = getCityUrls("http://www.gismeteo.ua" + pURL);
+                cityNames = getNames("http://www.gismeteo.ua" + pURL);
 
                 for (int i = 0; i < cityUrls.Count; i++)
                 {
@@ -107,12 +107,12 @@ namespace GetCities.Classes
 
         }
 
-        public List<String> getCityUrls(string linkToParse)
+        public List<String> getCityUrls(string completeURL)
         {
             string pattern = "<a href=\"(.*?)\" >";
-            MatchCollection matches = Regex.Matches(getHTML2(linkToParse), pattern);
+            MatchCollection matches = Regex.Matches(getHTML(completeURL), pattern);
 
-            List<string> links = new List<string>();
+            List<string> partialURLs = new List<string>();
             string tempMatch;
 
 
@@ -122,22 +122,22 @@ namespace GetCities.Classes
 
                 if (tempMatch.Contains("/weather-"))
                 {
-                    links.Add(tempMatch);
+                    partialURLs.Add(tempMatch);
                 }
             }
 
 
-            return links;
+            return partialURLs;
 
         }
 
-        public List<String> getNames(string link)
+        public List<String> getNames(string completeURL)
         {
             List<string> newCityNames = new List<string>();
 
             string pattern = "<a href=\"/weather.*?>(.*?)</a>";
 
-            MatchCollection matches = Regex.Matches(getHTML3(link), pattern);
+            MatchCollection matches = Regex.Matches(getHTML(completeURL), pattern);
 
             string tempMatch;
 
@@ -152,38 +152,17 @@ namespace GetCities.Classes
 
 
         //UTILS
-        public string getHTML(string link)
+        public string getHTML(string completeURL)
         {
             string htmlCodeUnparsed;
 
             WebClient client = new WebClient();
             client.Encoding = System.Text.Encoding.UTF8;
-            htmlCodeUnparsed = client.DownloadString(link);
+            htmlCodeUnparsed = client.DownloadString(completeURL);
 
             return htmlCodeUnparsed;
         }
 
-        public string getHTML2(string link)
-        {
-            string htmlCodeUnparsed;
-
-            WebClient client = new WebClient();
-            client.Encoding = System.Text.Encoding.UTF8;
-            htmlCodeUnparsed = client.DownloadString(link);
-
-            return htmlCodeUnparsed;
-        }
-
-        public string getHTML3(string link)
-        {
-            string htmlCodeUnparsed;
-
-            WebClient client = new WebClient();
-            client.Encoding = System.Text.Encoding.UTF8;
-            htmlCodeUnparsed = client.DownloadString(link);
-
-            return htmlCodeUnparsed;
-        }
 
     }
 }
